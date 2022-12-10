@@ -144,7 +144,7 @@ def oldOneHotEncoding(df):
             married.append(0)
             single.append(0)
             divorced.append(1)
-    
+
     return df
             
             
@@ -197,6 +197,13 @@ if __name__ == "__main__":
     df['OverTime'] = df['OverTime'].replace(["Yes", "No"], [1, 0])
 
     # One-Hot Encoding
+    df["Age"] = pd.cut(df["Age"], bins = [18, 30, 39, 47, 52, 61], labels = ["18-29", "30-38", "39-46", "47-51", "52-60"])
+    df["DailyRate"] = pd.cut(df["DailyRate"], bins = [100, 501, 1001, 1500], labels = ["102-500", "501-1000", "1001-1499"])
+    df["DistanceFromHome"] = pd.cut(df["DistanceFromHome"], bins = [1, 4, 10, 30], labels = ["1-3", "4-9", "10-29"])
+    df["HourlyRate"] = pd.cut(df["HourlyRate"], bins = [30, 52, 80, 101], labels = ["30-51", "52-79", "80-100"])
+    df["MonthlyIncome"] = pd.cut(df["MonthlyIncome"], bins = [1000, 3000, 8500, 20000], labels = ["1000-2999", "3000-8499", "8500-20000"])
+    df["MonthlyRate"] = pd.cut(df["MonthlyRate"], bins = [2000, 7000, 12000, 17000, 22000, 27000], labels = ["2094-6999", "7000-11999", "12000-16999", "17000-21999", "22000-26999"])
+
     cat_features = []
     for col, value in df.iteritems():
         if value.dtype == 'object':
@@ -207,9 +214,9 @@ if __name__ == "__main__":
     # Concat the two dataframes together columnwise
     df = pd.concat([df[num_features], pd.get_dummies(df[cat_features])], axis=1)
 
-    df.to_csv("data/data.csv", index=False)
+    df.to_csv("data/data_disc.csv", index=False)
 
     # Generating train/test files
     train, test = train_test_split(df, test_size=0.2)
-    train.to_csv("data/train.csv", index=False)
-    test.to_csv("data/test.csv", index=False)
+    train.to_csv("data/train_disc.csv", index=False)
+    test.to_csv("data/test_disc.csv", index=False)
